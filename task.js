@@ -5,7 +5,10 @@ const schema = new mongoose.Schema({
     name: { type: String, required: true },
     project_id: { type: mongoose.ObjectId , required: false, default: null },
     status: { type: Number, required: true, enum: [ 0, 1, 2, 3 ], default: 0 },
-    workers: { type: [ mongoose.ObjectId ], required: false, default: [] }
+    workers: { type: [ mongoose.ObjectId ], required: false, default: [] },
+    startDate: { type: Date, required: true, transform: v => v.toISOString().slice(0, 10) },
+    endDate: { type: Date, required: true, transform: v => v.toISOString().slice(0, 10) },
+  
 }, {
     versionKey: false,
     additionalProperties: false

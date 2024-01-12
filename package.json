@@ -20,7 +20,7 @@
   "description": "",
   "version": "1.0.0",
   "main": "server.js",
-  "homepage": "https://gitlab.com/miguelmonc/pws-mnc.git",
+  "homepage": "https://github.com/MoncadaAlvarezMiguelAngel/PWS2023.git",
   "devDependencies": {
     "@types/mime": "^3.0.4"
   }

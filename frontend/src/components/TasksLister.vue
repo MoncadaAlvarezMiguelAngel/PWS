@@ -32,6 +32,12 @@
                 Status
               </th>
               <th class="text-left">
+                Start date
+              </th>
+              <th class="text-left">
+                End date
+              </th>
+              <th class="text-left">
                 Project
               </th>
               <th class="text-left">
@@ -43,8 +49,10 @@
             <tr v-for="(task, index) in tasks" :key="index" @click="checkIfInRole(user, [ 1 ]) && click(task)">
               <td>{{ task.name }}</td>
               <td><v-chip :color="[ 'orange darken-3', 'blue darken-2', 'yellow darken-3', 'success' ][task.status]">
-  {{ ['Preparation', 'Pending', 'In tests', 'Completed'][task.status] }}
-</v-chip></td>
+                  {{ ['Preparation', 'Pending', 'In tests', 'Completed'][task.status] }}
+                  </v-chip></td>
+              <td class="text-left">{{ new Date(task.startDate).toLocaleDateString() }}</td>
+              <td class="text-left">{{ new Date(task.endDate).toLocaleDateString() }}</td>
               <td>
                 <!--<v-chip :color="project.color" v-for="(project, pindex) in projects" :key="pindex" 
                 @update:model-value="modify(task)"

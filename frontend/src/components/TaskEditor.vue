@@ -12,6 +12,8 @@
               <v-radio :value="2" label="in test"></v-radio>
               <v-radio :value="3" label="completed"></v-radio>
             </v-radio-group>
+            <v-text-field variant="solo" type="date" label="Birth date" v-model="task.startDate" :rules="[ rules.validBirthDate ]"></v-text-field>
+            <v-text-field variant="solo" type="date" label="Birth date" v-model="task.endDate" :rules="[ rules.validBirthDate ]"></v-text-field>
             <v-select
             v-model="task.workers" label="Workers"
             :items="this.workers.map(person => ({ value: person._id, title: person.firstName }))"
@@ -95,6 +97,7 @@
         isTaskValid: false,
         rules: {
           required: value => !!value || 'empty value is not allowed',
+          validBirthDate: value => !isNaN(new Date(value)) || 'valid date required'
         },
         task: {},
         dialog: false,
