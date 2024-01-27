@@ -52,7 +52,7 @@
                   {{ ['Preparation', 'Pending', 'In tests', 'Completed'][task.status] }}
                   </v-chip></td>
               <td class="text-left">{{ new Date(task.startDate).toLocaleDateString() }}</td>
-              <td class="text-left">{{ new Date(task.endDate).toLocaleDateString() }}</td>
+              <td class="text-left">{{ task.endDate ? new Date(task.endDate).toLocaleDateString() : 'No end date established' }}</td>
               <td>
                 <!--<v-chip :color="project.color" v-for="(project, pindex) in projects" :key="pindex" 
                 @update:model-value="modify(task)"
@@ -85,6 +85,12 @@
                 </v-chip>
               </td>
             </tr>
+            <v-row>
+              <v-col cols="6" >
+                <GantChart />
+            </v-col>
+            </v-row>
+
           </tbody>
         </v-table>
       </v-card-text>
@@ -102,10 +108,11 @@
 <script>
 import common from '../mixins/common'
 import TaskEditor from './TaskEditor.vue'
+import GantChart from './GantChart.vue'
 
 export default {
   name: 'TasksLister',
-  components: { TaskEditor },
+  components: { TaskEditor, GantChart },
   props: [ 'user' ],
   mixins: [ common ],
   methods: {

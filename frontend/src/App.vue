@@ -12,20 +12,13 @@
       <v-divider></v-divider>
 
       <v-list v-if="user.username">
-    <v-list-item>
-      <v-avatar>
-        <v-img v-for="role in user.roles" :key="role" :src="getRoleIcon(role)" />
-      </v-avatar>
-      <v-list-item-content >
-            <template v-if="showNavigation">
-              <v-list-item
+        <v-list-item
+          :prepend-avatar="'/uploads/' + user.username + '.jpg?' + cacheKey"
           :title="user.username"
+          @click="uploadFileDialog = true"
         >
         </v-list-item>
-            </template>
-      </v-list-item-content>
-    </v-list-item>
-  </v-list>
+      </v-list>
 
       <v-list density="compact" nav>
         <v-list-item key="Login" @click="prepareToLogin" prepend-icon="mdi-login" title="Login" exact v-if="!user.username"/>
@@ -46,6 +39,10 @@
       <ConfirmationDialog :question="'Are you sure to logout?'" @ok="logout" @cancel="logoutConfirmation = false"/>
     </v-dialog>
 
+    <v-dialog v-model="uploadFileDialog" width="25em">
+      <UploadFile :user="user" @close="closeUploadFileDialog"/>
+    </v-dialog>
+
   </v-app>
 </template>
 
@@ -53,10 +50,11 @@
 import common from './mixins/common'
 import Login from './components/Login.vue'
 import ConfirmationDialog from './components/ConfirmationDialog.vue'
+import UploadFile from './components/UploadFile.vue'
 
 export default {
   name: 'App',
-  components: { Login, ConfirmationDialog },
+  components: { Login, ConfirmationDialog, UploadFile },
   mixins: [ common ],
   data() {
     return {
@@ -67,26 +65,16 @@ export default {
           { title: 'Tasks', icon:'mdi-calendar-check-outline' , href: '#/tasks' , roles: [ 0, 1 ] },
           { title: 'Map', icon: 'mdi-map', href: '#/map' },
           { title: 'Chat', icon: 'mdi-chat-processing-outline', href: '#/chat' },
-
       ],
       showNavigation: false,
       user: {},
       loginDialog: false,
-      logoutConfirmation: false
+      logoutConfirmation: false,
+      uploadFileDialog: false,
+      cacheKey: Date.now()
     }
   },
   methods: {
-    getRoleIcon(role) {
-      switch (role) {
-        case 0:
-          return require('./assets/adminicon.png');
-        case 1:
-          return require('./assets/user.png');
-        // Puedes añadir más casos según los roles que tengas
-        default:
-          return require('./assets/vue.png');
-      }
-    },
     setUser(data) {
       this.loginDialog = false
       Object.keys(this.user).forEach(key => delete this.user[key])
@@ -108,6 +96,10 @@ export default {
     login(data) {
       this.loginDialog = false
       this.setUser(data)
+    },
+    closeUploadFileDialog() {
+      this.uploadFileDialog = false
+      this.cacheKey = Date.now()
     }
   },
   mounted() {

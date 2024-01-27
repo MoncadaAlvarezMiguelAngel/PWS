@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const task = require('./task')
 
 const schema = new mongoose.Schema({
     firstName: { type: String, required: true },
@@ -60,7 +61,6 @@ module.exports = {
                     aggregation.push({ $sort: { projectsCount: -1 }})
                 }
             } catch(ex) {}
-
             aggregation.push({ $skip: parseInt(req.query.skip) || 0 })
             aggregation.push({ $limit: parseInt(req.query.limit) || 10 })
             aggregation.push({ $lookup: {
@@ -112,7 +112,9 @@ module.exports = {
         const _id = req.query._id
         model.findOneAndDelete({ _id }).then((deleted) => {
             if(deleted) {
-                res.json(deleted)
+                task.getModel().updateMany({}, { $pull: { workers: _id } })
+                .then(() => res.json(deleted))
+                .catch(err => res.status(400).json({ error: err.message }))
             } else {
                 res.status(404).json({ error: 'No such object' })
             }

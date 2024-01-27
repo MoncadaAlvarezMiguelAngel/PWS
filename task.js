@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
     status: { type: Number, required: true, enum: [ 0, 1, 2, 3 ], default: 0 },
     workers: { type: [ mongoose.ObjectId ], required: false, default: [] },
     startDate: { type: Date, required: true, transform: v => v.toISOString().slice(0, 10) },
-    endDate: { type: Date, required: true, transform: v => v.toISOString().slice(0, 10) },
+    endDate: { type: Date, required: false, transform: v => v.toISOString().slice(0, 10) },
   
 }, {
     versionKey: false,
